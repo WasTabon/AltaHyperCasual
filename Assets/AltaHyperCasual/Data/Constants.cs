@@ -1,18 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Constants : MonoBehaviour
+namespace AltaHyperCasual.Data
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Constants
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private static Constants _instance;
+        public static Constants Instance => _instance ??= new Constants();
     }
 }

@@ -7,9 +7,7 @@ namespace AltaHyperCasual.Code.Core
     {
         [Header("GAME SETTINGS")]
         [SerializeField] private GameConfig _config;
-
-        [Header("PLAYER TRANSFORM")] [SerializeField]
-        private Transform _playerTransform;
+        [SerializeField] private Transform _playerTransform;
         
         private GameController _game;
 
