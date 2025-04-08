@@ -4,5 +4,7 @@ namespace AltaHyperCasual.Code.Animations.JellyAnimation
     {
         void SetSize(float radius);
         void PlayAnimation(float deltaTime);
+        void DecreaseSize(float deltaTime, float speed);
+        void IncreaseSize(float deltaTime, float speed);
     }
 }

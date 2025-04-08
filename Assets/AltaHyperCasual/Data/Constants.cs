@@ -4,5 +4,9 @@ namespace AltaHyperCasual.Data
     {
         private static Constants _instance;
         public static Constants Instance => _instance ??= new Constants();
+
+        public const string TAG_TREE_COLLISION = "Tree";
+        public const string TAG_PLAYER_SHOOTPOS = "ShootPos";
+        public const float MIN_PLAYER_SIZE = 0.1f;
     }
 }

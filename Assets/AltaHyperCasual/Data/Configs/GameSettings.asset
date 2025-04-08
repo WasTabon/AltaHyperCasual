@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: GameSettings
   m_EditorClassIdentifier: 
   _playerRadius: 3
+  _playerMoveSpeed: 3
+  _playerSizeDecreaseSpeed: 0.8
+  _bulletMoveSpeed: 5
   _deformSpeed: 5
   _deformAmount: 0.1
   _scaleSpeed: 2
+  _maxParticlesAmount: 10

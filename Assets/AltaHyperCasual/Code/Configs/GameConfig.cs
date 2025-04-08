@@ -8,6 +8,7 @@ namespace AltaHyperCasual.Code.Configs
         [Header("PLAYER SETTINGS")]
         [SerializeField] private float _playerRadius;
         [SerializeField] private float _playerMoveSpeed;
+        [SerializeField] private float _playerSizeDecreaseSpeed;
         [SerializeField] private float _bulletMoveSpeed;
         [Header("JELLY ANIMATION SETTINGS")]
         [Header("default:  5")]
@@ -21,6 +22,7 @@ namespace AltaHyperCasual.Code.Configs
 
         public float PlayerRadius => _playerRadius;
         public float PlayerMoveSpeed => _playerMoveSpeed;
+        public float PlayerSizeDecreaseSpeed => _playerSizeDecreaseSpeed;
         public float BulletMoveSpeed => _bulletMoveSpeed;
         public float DeformSpeed => _deformSpeed;
         public float DeformAmount => _deformAmount;

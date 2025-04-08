@@ -6,6 +6,7 @@ namespace AltaHyperCasual.Code.Input
     public class InputController : IInputController
     {
         public event Action OnHoldStart;
+        public event Action OnHoldInvoke;
         public event Action OnHoldEnd;
         
         private bool _isInputActive;
@@ -75,7 +76,7 @@ namespace AltaHyperCasual.Code.Input
 
         public void OnInputHold(Vector2 screenPosition)
         {
-            
+            OnHoldInvoke?.Invoke();
         }
 
         public void OnInputEnd(Vector2 screenPosition)

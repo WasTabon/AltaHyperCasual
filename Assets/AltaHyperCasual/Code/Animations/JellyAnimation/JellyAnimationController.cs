@@ -1,3 +1,4 @@
+using AltaHyperCasual.Data;
 using UnityEngine;
 
 namespace AltaHyperCasual.Code.Animations.JellyAnimation
@@ -33,10 +34,21 @@ namespace AltaHyperCasual.Code.Animations.JellyAnimation
             float jellyX = Mathf.Sin(_animationTimer) * _deformAmount;
             float jellyY = Mathf.Sin(_animationTimer + 1f) * _deformAmount;
 
-            Vector3 jellyOffset = new Vector3(jellyX, jellyY, 0f);
-            Vector3 scaledTarget = _targetScale + Vector3.Scale(_targetScale, jellyOffset);
-            
-            _transform.localScale = Vector3.Lerp(_transform.localScale, scaledTarget, deltaTime * _scaleSpeed);
+            Vector3 offset = new Vector3(jellyX, jellyY, 0f);
+            Vector3 scale = _targetScale + Vector3.Scale(_targetScale, offset);
+
+            _transform.localScale = Vector3.Lerp(_transform.localScale, scale, deltaTime * _scaleSpeed);
+        }
+
+        public void DecreaseSize(float deltaTime, float speed)
+        {
+            Vector3 reduce = Vector3.one * speed * deltaTime;
+            _targetScale -= reduce;
+        }
+        public void IncreaseSize(float deltaTime, float speed)
+        {
+            Vector3 reduce = Vector3.one * speed * deltaTime;
+            _targetScale += reduce;
         }
     }
 }

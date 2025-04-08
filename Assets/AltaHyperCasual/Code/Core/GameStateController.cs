@@ -31,10 +31,15 @@ namespace AltaHyperCasual.Code.Core
             _vfxController.Initialize(config.MaxParticlesAmount, explosionParticle, fireParticle);
 
             _player = new PlayerController();
-            _player.Initialize(playerTransform, config.PlayerRadius, _jellyAnimationPlayer);
+            _player.Initialize(playerTransform, config.PlayerRadius, _jellyAnimationPlayer, _config.PlayerSizeDecreaseSpeed);
+            _inputController.OnHoldInvoke += _player.HandleShootStart;
+            _inputController.OnHoldEnd += _player.HandleShootEnd;
 
             _bullet = new Bullet();
-            _bullet.Initialize(config.BulletMoveSpeed ,bulletTransform, _jellyAnimationBullet);
+            _bullet.Initialize(config.BulletMoveSpeed ,bulletTransform, _jellyAnimationBullet, _vfxController, _config.PlayerSizeDecreaseSpeed);
+            _inputController.OnHoldStart += _bullet.HandleShootStart;
+            _inputController.OnHoldInvoke += _bullet.HandleShootHold;
+            _inputController.OnHoldEnd += _bullet.HandleShootEnd;
         }
 
         public void Tick(float deltaTime)

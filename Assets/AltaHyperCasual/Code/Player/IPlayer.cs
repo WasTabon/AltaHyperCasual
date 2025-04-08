@@ -7,6 +7,9 @@ namespace AltaHyperCasual.Code.Player
 {
     public interface IPlayer : IUpdatable, IMovable
     {
-        void Initialize(Transform transform, float playerRadius, IJellyAnimation jellyAnimation);
+        void Initialize(Transform transform, float playerRadius, IJellyAnimation jellyAnimation, float decreaseSpeed);
+
+        void HandleShootStart();
+        void HandleShootEnd();
     }
 }
