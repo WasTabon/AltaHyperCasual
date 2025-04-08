@@ -16,14 +16,16 @@ namespace AltaHyperCasual.Utils.TriggerListener
             _collisionTag = tag;
         }
         
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter(Collider coll)
         {
-            OnTriggerEnterEvent?.Invoke(other);
+            if (coll.CompareTag(_collisionTag))
+                OnTriggerEnterEvent?.Invoke(coll);
         }
 
-        private void OnTriggerExit(Collider other)
+        private void OnTriggerExit(Collider coll)
         {
-            OnTriggerExitEvent?.Invoke(other);
+            if (coll.CompareTag(_collisionTag))
+                OnTriggerExitEvent?.Invoke(coll);
         }
     }
 }

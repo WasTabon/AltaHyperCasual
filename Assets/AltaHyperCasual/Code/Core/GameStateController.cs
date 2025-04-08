@@ -18,6 +18,8 @@ namespace AltaHyperCasual.Code.Core
         private readonly IBullet _bullet;
         private readonly IVFXController _vfxController;
 
+        private GameStateType _gameState;
+
         public GameStateController(GameConfig config, Transform playerTransform, Transform bulletTransform, GameObject explosionParticle, GameObject fireParticle)
         {
             _config = config;
@@ -40,6 +42,8 @@ namespace AltaHyperCasual.Code.Core
             _inputController.OnHoldStart += _bullet.HandleShootStart;
             _inputController.OnHoldInvoke += _bullet.HandleShootHold;
             _inputController.OnHoldEnd += _bullet.HandleShootEnd;
+
+            _bullet.OnMoveStart += SetStateShot;
         }
 
         public void Tick(float deltaTime)
@@ -47,6 +51,35 @@ namespace AltaHyperCasual.Code.Core
             _inputController.Tick(deltaTime);
             _player.Tick(deltaTime);
             _bullet.Tick(deltaTime);
+        }
+
+        private void SetStateShot()
+        {
+            _gameState = GameStateType.Shot;
+            
+            ChangeGameSettings();
+        }
+
+        private void ChangeGameSettings()
+        {
+            if (_gameState == GameStateType.Idle)
+            {
+                _inputController.OnHoldInvoke += _player.HandleShootStart;
+                _inputController.OnHoldEnd += _player.HandleShootEnd;
+            
+                _inputController.OnHoldStart += _bullet.HandleShootStart;
+                _inputController.OnHoldInvoke += _bullet.HandleShootHold;
+                _inputController.OnHoldEnd += _bullet.HandleShootEnd;
+            }
+            else if (_gameState == GameStateType.Shot)
+            {
+                _inputController.OnHoldInvoke -= _player.HandleShootStart;
+                _inputController.OnHoldEnd -= _player.HandleShootEnd;
+            
+                _inputController.OnHoldStart -= _bullet.HandleShootStart;
+                _inputController.OnHoldInvoke -= _bullet.HandleShootHold;
+                _inputController.OnHoldEnd -= _bullet.HandleShootEnd;
+            }
         }
     }
 }

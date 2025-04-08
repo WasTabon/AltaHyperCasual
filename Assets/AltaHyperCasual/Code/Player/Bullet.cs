@@ -1,3 +1,4 @@
+using System;
 using AltaHyperCasual.Code.Animations.JellyAnimation;
 using AltaHyperCasual.Data;
 using AltaHyperCasual.Utils.TriggerListener;
@@ -8,6 +9,10 @@ namespace AltaHyperCasual.Code.Player
 {
     public class Bullet : IBullet
     {
+        public event Action OnMoveStart;
+        public event Action OnMoveEnd;
+        
+        private float _moveSpeed;
         private float _decreaseSpeed;
         
         private IJellyAnimation _jellyAnimation;
@@ -16,9 +21,10 @@ namespace AltaHyperCasual.Code.Player
         private Transform _shootPosTransform;
 
         private bool _isMoving;
-        
+
         public void Initialize(float moveSpeed ,Transform transform, IJellyAnimation jellyAnimation, IVFXController vfxController, float decreaseSpeed)
         {
+            _moveSpeed = moveSpeed;
             _transform = transform;
             _jellyAnimation = jellyAnimation;
             _vfxController = vfxController;
@@ -34,12 +40,11 @@ namespace AltaHyperCasual.Code.Player
             ResetSize();
         }
         
-        public void MoveTowards()
+        public void MoveTowards(float deltaTime)
         {
             if (_isMoving)
             {
-                
-                
+                _transform.position += _transform.forward * _moveSpeed * deltaTime;
             }
         }
 
@@ -50,6 +55,8 @@ namespace AltaHyperCasual.Code.Player
 
         public void HandleShootStart()
         {
+            Debug.Log("Shot Start");
+            
             _transform.position = _shootPosTransform.position;
             _transform.gameObject.SetActive(true);
             _transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
@@ -62,13 +69,14 @@ namespace AltaHyperCasual.Code.Player
 
         public void HandleShootEnd()
         {
-            
+            OnMoveStart?.Invoke();
+            _isMoving = true;
         }
 
         public void Tick(float deltaTime)
         {
             _jellyAnimation.PlayAnimation(deltaTime);
-            MoveTowards();
+            MoveTowards(deltaTime);
         }
 
         public void Dispose()

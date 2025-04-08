@@ -4,6 +4,6 @@ namespace AltaHyperCasual.Code.Movable
 {
     public interface IMovable
     {
-        public void MoveTowards();
+        public void MoveTowards(float deltaTime);
     }
 }

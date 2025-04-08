@@ -30,7 +30,7 @@ namespace AltaHyperCasual.Code.Player
             
         }
 
-        public void MoveTowards()
+        public void MoveTowards(float deltaTime)
         {
             
         }
