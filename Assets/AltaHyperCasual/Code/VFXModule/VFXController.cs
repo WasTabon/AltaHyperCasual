@@ -8,6 +8,7 @@ namespace AltaHyperCasual.Code.VFXModule
 {
     public class VFXController : IVFXController
     {
+        
         private int _maxParticleAmount;
         
         private GameObject _explosionParticle;

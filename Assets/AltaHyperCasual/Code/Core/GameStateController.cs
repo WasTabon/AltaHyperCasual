@@ -33,7 +33,7 @@ namespace AltaHyperCasual.Code.Core
             _vfxController.Initialize(config.MaxParticlesAmount, explosionParticle, fireParticle);
 
             _player = new PlayerController();
-            _player.Initialize(playerTransform, config.PlayerRadius, _jellyAnimationPlayer, _config.PlayerSizeDecreaseSpeed);
+            _player.Initialize(playerTransform, config.PlayerRadius, _jellyAnimationPlayer, _config.PlayerSizeDecreaseSpeed, _config.PlayerMoveSpeed);
             _inputController.OnHoldInvoke += _player.HandleShootStart;
             _inputController.OnHoldEnd += _player.HandleShootEnd;
 
@@ -44,6 +44,7 @@ namespace AltaHyperCasual.Code.Core
             _inputController.OnHoldEnd += _bullet.HandleShootEnd;
 
             _bullet.OnMoveStart += SetStateShot;
+            _bullet.OnMoveEnd += SetStateIdle;
         }
 
         public void Tick(float deltaTime)
@@ -53,15 +54,20 @@ namespace AltaHyperCasual.Code.Core
             _bullet.Tick(deltaTime);
         }
 
+        private void SetStateIdle()
+        {
+            _gameState = GameStateType.Idle;
+            ChangeGameSettings();
+        }
         private void SetStateShot()
         {
             _gameState = GameStateType.Shot;
-            
             ChangeGameSettings();
         }
 
         private void ChangeGameSettings()
         {
+            Debug.Log($"Current state: {_gameState}");
             if (_gameState == GameStateType.Idle)
             {
                 _inputController.OnHoldInvoke += _player.HandleShootStart;

@@ -6,16 +6,18 @@ namespace AltaHyperCasual.Code.Player
 {
     public class PlayerController : IPlayer
     {
+        private float _playerSpeed;
         private float _decreaseSpeed;
         
         private IJellyAnimation _jellyAnimation;
         private Transform _transform;
         
-        public void Initialize(Transform transform, float playerRadius, IJellyAnimation jellyAnimation, float decreaseSpeed)
+        public void Initialize(Transform transform, float playerRadius, IJellyAnimation jellyAnimation, float decreaseSpeed, float playerSpeed)
         {
             _transform = transform;
             _jellyAnimation = jellyAnimation;
             _decreaseSpeed = decreaseSpeed;
+            _playerSpeed = playerSpeed;
             
             _jellyAnimation.SetSize(playerRadius);
         }
@@ -32,8 +34,9 @@ namespace AltaHyperCasual.Code.Player
 
         public void MoveTowards(float deltaTime)
         {
-            
+            _transform.position += _transform.forward * _playerSpeed * deltaTime;
         }
+        
         public void Tick(float deltaTime)
         {
             _jellyAnimation.PlayAnimation(deltaTime);

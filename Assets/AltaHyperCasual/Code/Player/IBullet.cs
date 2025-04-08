@@ -12,7 +12,7 @@ namespace AltaHyperCasual.Code.Player
         event Action OnMoveStart;
         event Action OnMoveEnd;
         void Initialize(float moveSpeed ,Transform transform, IJellyAnimation jellyAnimation, IVFXController vfxController, float decreaseSpeed);
-        void Infect();
+        void Infect(Collider coll);
         void HandleShootStart();
         void HandleShootHold();
         void HandleShootEnd();

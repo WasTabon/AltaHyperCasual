@@ -1,5 +1,6 @@
 using System;
 using AltaHyperCasual.Code.Animations.JellyAnimation;
+using AltaHyperCasual.Code.Infectable;
 using AltaHyperCasual.Data;
 using AltaHyperCasual.Utils.TriggerListener;
 using AltaHyperCasual.Code.VFXModule;
@@ -48,15 +49,23 @@ namespace AltaHyperCasual.Code.Player
             }
         }
 
-        public void Infect()
+        public void Infect(Collider coll)
         {
-        
+            float radius = _transform.localScale.x;
+            Vector3 explosionPosition = coll.ClosestPoint(_transform.position);
+            Collider[] hits = Physics.OverlapSphere(explosionPosition, radius);
+            foreach (Collider hit in hits)
+            {
+                if (hit.CompareTag(Constants.TAG_TREE_COLLISION))
+                {
+                    _vfxController.SpawnVFX(VFXType.Fire, hit.gameObject.transform.position);
+                    hit.gameObject.GetComponent<IInfectable>().Infect();
+                }
+            }
         }
 
         public void HandleShootStart()
         {
-            Debug.Log("Shot Start");
-            
             _transform.position = _shootPosTransform.position;
             _transform.gameObject.SetActive(true);
             _transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
@@ -78,18 +87,6 @@ namespace AltaHyperCasual.Code.Player
             _jellyAnimation.PlayAnimation(deltaTime);
             MoveTowards(deltaTime);
         }
-
-        public void Dispose()
-        {
-            if (_transform != null)
-            {
-                var listener = _transform.GetComponent<TriggerListener>();
-                if (listener != null)
-                {
-                    listener.OnTriggerEnterEvent -= Explode;
-                }
-            }
-        }
         
         private void ResetSize()
         {
@@ -101,8 +98,21 @@ namespace AltaHyperCasual.Code.Player
         private void Explode(Collider coll)
         {
             _vfxController.SpawnVFX(VFXType.Explosion, _transform.position);
-            Infect();
+            Infect(coll);
             ResetSize();
+            OnMoveEnd?.Invoke();
+        }
+        
+        private void Dispose()
+        {
+            if (_transform != null)
+            {
+                var listener = _transform.GetComponent<TriggerListener>();
+                if (listener != null)
+                {
+                    listener.OnTriggerEnterEvent -= Explode;
+                }
+            }
         }
     }
 }
