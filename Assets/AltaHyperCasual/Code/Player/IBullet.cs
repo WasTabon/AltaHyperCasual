@@ -5,8 +5,9 @@ using UnityEngine;
 
 namespace AltaHyperCasual.Code.Player
 {
-    public interface IPlayer : IUpdatable, IMovable
+    public interface IBullet : IMovable, IUpdatable
     {
-        void Initialize(Transform transform, float playerRadius, IJellyAnimation jellyAnimation);
+        void Initialize(float moveSpeed ,Transform transform, IJellyAnimation jellyAnimation);
+        void Infect();
     }
 }

@@ -1,4 +1,5 @@
 using AltaHyperCasual.Code.Animations.JellyAnimation;
+using AltaHyperCasual.Code.Movable;
 using UnityEngine;
 
 namespace AltaHyperCasual.Code.Player
@@ -15,7 +16,8 @@ namespace AltaHyperCasual.Code.Player
             
             _jellyAnimation.SetSize(playerRadius);
         }
-        public void MoveTowards(Vector3 target)
+
+        public void MoveTowards()
         {
             
         }

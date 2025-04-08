@@ -8,17 +8,20 @@ namespace AltaHyperCasual.Code.Core
         [Header("GAME SETTINGS")]
         [SerializeField] private GameConfig _config;
         [SerializeField] private Transform _playerTransform;
+        [SerializeField] private Transform _bulletTransform;
+        [SerializeField] private GameObject _explosionParticle;
+        [SerializeField] private GameObject _fireParticle;
         
-        private GameController _game;
+        private GameStateController _gameState;
 
         private void Awake()
         {
-            _game = new GameController(_config, _playerTransform);
+            _gameState = new GameStateController(_config, _playerTransform, _bulletTransform, _explosionParticle, _fireParticle);
         }
 
         private void Update()
         {
-            _game.Tick(Time.deltaTime);
+            _gameState.Tick(Time.deltaTime);
         }
     }
 }
