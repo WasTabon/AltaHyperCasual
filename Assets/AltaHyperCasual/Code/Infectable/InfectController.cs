@@ -1,4 +1,3 @@
-using System.Collections;
 using AltaHyperCasual.Data;
 using UnityEngine;
 
@@ -6,44 +5,56 @@ namespace AltaHyperCasual.Code.Infectable
 {
     public class InfectController : MonoBehaviour, IInfectable
     {
-        private Coroutine _rotateCoroutine;
-        
+        private Quaternion _startRotation;
+        private Quaternion _targetRotation;
+        private float _rotationElapsed;
+        private bool _isRotating;
+        private float _rotationDuration;
+
+        private float _inactiveTimer;
+        private bool _waitingToDisable;
+
         public void Infect()
         {
-            Invoke(nameof(Destroy), Constants.TREE_FALL_DURATION);
-        }
-
-        private void Destroy()
-        {
             GetComponent<Collider>().enabled = false;
-            _rotateCoroutine = StartCoroutine(RotateAndDeactivate());
+            
+            Invoke(nameof(StartRotation), Constants.TREE_FALL_DURATION);
         }
-        
-        private IEnumerator RotateAndDeactivate()
+
+        private void StartRotation()
         {
-            Quaternion startRotation = transform.rotation;
-            Quaternion targetRotation = Quaternion.Euler(90f, startRotation.eulerAngles.y, Random.Range(0f, 360f));
+            _startRotation = transform.rotation;
+            _targetRotation = Quaternion.Euler(90f, _startRotation.eulerAngles.y, Random.Range(0f, 360f));
+            _rotationDuration = Constants.TREE_BURN_DURATION;
+            _rotationElapsed = 0f;
+            _isRotating = true;
+        }
 
-            float duartion = Constants.TREE_BURN_DURATION;
-            float elapsed = 0f;
-
-            while (elapsed < duartion)
+        private void Update()
+        {
+            if (_isRotating)
             {
-                elapsed += Time.deltaTime;
-                float t = elapsed / duartion;
-                transform.rotation = Quaternion.Slerp(startRotation, targetRotation, t);
-                yield return null;
+                _rotationElapsed += Time.deltaTime;
+                float time = Mathf.Clamp01(_rotationElapsed / _rotationDuration);
+                transform.rotation = Quaternion.Slerp(_startRotation, _targetRotation, time);
+
+                if (time >= 1f)
+                {
+                    _isRotating = false;
+                    _inactiveTimer = Constants.TREE_INACTIVE_DURATION;
+                    _waitingToDisable = true;
+                }
             }
 
-            transform.rotation = targetRotation;
-            
-            Invoke(nameof(SetInactive), Constants.TREE_INACTIVE_DURATION);
-        }
-
-        private void SetInactive()
-        {
-            StopCoroutine(_rotateCoroutine);
-            gameObject.SetActive(false);
+            if (_waitingToDisable)
+            {
+                _inactiveTimer -= Time.deltaTime;
+                if (_inactiveTimer <= 0f)
+                {
+                    _waitingToDisable = false;
+                    gameObject.SetActive(false);
+                }
+            }
         }
     }
 }

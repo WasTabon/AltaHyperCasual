@@ -8,33 +8,18 @@ namespace AltaHyperCasual.Code.VFXModule
 {
     public class VFXController : IVFXController
     {
-        
-        private int _maxParticleAmount;
-        
         private GameObject _explosionParticle;
         private GameObject _fireParticle;
 
-        private Queue<GameObject> _fireQueue;
-
-        public void Initialize(int maxParticlesAmount, GameObject explosionParticle, GameObject fireParticle)
+        public void Initialize(GameObject explosionParticle, GameObject fireParticle)
         {
-            _maxParticleAmount = maxParticlesAmount;
-            _fireQueue = new Queue<GameObject>(_maxParticleAmount);
-
             _explosionParticle = explosionParticle;
             _fireParticle = fireParticle;
         }
 
         public void SpawnVFX(VFXType vfxType, Vector3 position)
         {
-            if (_fireQueue.Count >= _maxParticleAmount)
-            {
-                _fireQueue.Peek().SetActive(false);
-                _fireQueue.Dequeue();
-            }
-
-            GameObject particle = Object.Instantiate(GetParticle(vfxType), position, quaternion.identity);
-            _fireQueue.Enqueue(particle);
+            Object.Instantiate(GetParticle(vfxType), position, quaternion.identity);
         }
 
         private GameObject GetParticle(VFXType vfxType)
