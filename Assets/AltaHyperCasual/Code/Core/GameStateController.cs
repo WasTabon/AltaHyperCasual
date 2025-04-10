@@ -79,14 +79,15 @@ namespace AltaHyperCasual.Code.Core
             if (_gameState == GameStateType.Pause)
                 return;
             
-            if (_gameState is not (GameStateType.Win and GameStateType.Lose))
+            if (_gameState != GameStateType.Win && _gameState != GameStateType.Lose)
             {
                 _inputController.Tick(deltaTime);
                 _player.Tick(deltaTime);
                 _bullet.Tick(deltaTime);
+                _winController.CheckLose();
                 _camera.Tick(deltaTime);
             }
-            else if (_gameState == GameStateType.Moving)
+            if (_gameState == GameStateType.Moving)
             {
                 _winController.CheckWin();
             }   

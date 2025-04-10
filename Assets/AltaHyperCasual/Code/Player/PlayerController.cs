@@ -65,13 +65,12 @@ namespace AltaHyperCasual.Code.Player
 
         private bool IsPathClear()
         {
-            RaycastHit[] hits = Physics.SphereCastAll(_transform.position, _transform.localScale.x, _transform.forward, 50, ~0, QueryTriggerInteraction.Collide);
+            RaycastHit[] hits = Physics.SphereCastAll(_transform.position, _transform.localScale.x / 2, _transform.forward, 50, ~0, QueryTriggerInteraction.Collide);
 
             foreach (RaycastHit hit in hits)
             {
                 if (hit.collider != null && hit.collider.isTrigger)
                 {
-                    Debug.Log(hit.collider.gameObject.name);
                     return false;
                 }
             }

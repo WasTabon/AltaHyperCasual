@@ -8,6 +8,7 @@ namespace AltaHyperCasual.Code.WinController
         event Action OnWin;
         event Action OnLose;
         void Initialize(Transform playerTransform, Transform finishTransform);
+        void CheckLose();
         void CheckWin();
     }
 }

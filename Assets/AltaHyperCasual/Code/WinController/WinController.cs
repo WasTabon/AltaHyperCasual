@@ -17,19 +17,18 @@ namespace AltaHyperCasual.Code.WinController
             _finishTransform = finishTransform;
         }
 
-        public void CheckWin()
-        {
-            if (Distance(_playerTransform.position, _finishTransform.position) <= 0.1f)
-            {
-                OnWin?.Invoke();
-            }
-        }
-
         public void CheckLose()
         {
             if (_playerTransform.localScale.x <= 0.1f)
             {
                 OnLose?.Invoke();
+            }
+        }
+        public void CheckWin()
+        {
+            if (Vector3.Distance(_playerTransform.position, _finishTransform.position) <= 3f)
+            {
+                OnWin?.Invoke();
             }
         }
         
